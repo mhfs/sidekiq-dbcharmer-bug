@@ -1,13 +1,13 @@
-# Sidekiq Failures Example
+# Sidekiq DbCharmer Bug
 
-This is a very simple demo of [sidekiq](github.com/mperham/sidekiq) and [sidekiq-failures](https://github.com/mhfs/sidekiq-failures).
+Reproduces the bug dicussed at https://github.com/kovyrin/db-charmer/issues/30
 
 ## Running
 
 Clone the repo:
 
 ```
-git clone git@github.com:mhfs/sidekiq-failures-example.git
+git clone git@github.com:mhfs/sidekiq-dbcharmer-bug.git
 ```
 
 Bundle the gems:
@@ -16,18 +16,8 @@ Bundle the gems:
 bundle
 ```
 
-Run sidekiq-web:
-
 ```
-rackup
+sidekiq -r ./sidekiq-dbcharmer-bug.rb
 ```
 
-Access `http://localhost:9292/`. You'll see 5 enqueued jobs. 3 GoodWorkers and 2 BadWorkers. You're Failures tab should be empty.
-
-It's time to consume them:
-
-```
-sidekiq -r ./sidekiq-failures-example.rb
-```
-
-Refresh your browser and you should now see failures appearing as the BadWorkers are failing and being retried.
+You should see the errors in the terminal.

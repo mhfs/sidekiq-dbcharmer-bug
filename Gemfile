@@ -2,4 +2,6 @@ source :rubygems
 
 gem 'rack'
 gem 'sidekiq'
-gem 'sidekiq-failures'
+gem 'activerecord'
+gem 'standalone_migrations'
+gem 'sqlite3'
