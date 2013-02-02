@@ -24,6 +24,8 @@ sidekiq -r ./sidekiq-dbcharmer-bug.rb
 
 You should see the errors in the terminal.
 
+You can also notice that if you comment the `require 'db_chamer'` line in `sidekiq-dbcharmer-bug.rb`
+the errors go away.
 
 ## Without concurency
 
