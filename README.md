@@ -1,4 +1,4 @@
-# Sidekiq DbCharmer Bug
+# Sidekiq DB Charmer Bug #30
 
 Reproduces the bug dicussed at https://github.com/kovyrin/db-charmer/issues/30
 

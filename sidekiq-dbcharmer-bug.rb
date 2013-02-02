@@ -1,5 +1,6 @@
 require "sidekiq"
 require "active_record"
+require "db_charmer"
 
 ##
 # Setup AR and establish connection
@@ -10,12 +11,16 @@ ActiveRecord::Base.establish_connection('development')
 ##
 # Create empty user table and model
 class CreateUserSchema < ActiveRecord::Migration
-  def change
-    create_table :users, force: true do |t|
-      t.string :name
-    end
+  db_magic connections: [:default, :slave1, :slave2, :slave3]
 
-    add_index :users, :name
+  def change
+    [:default, :slave1, :slave2, :slave3].each do |db|
+      on_db db do
+        create_table :users, force: true do |t|
+          t.string :name
+        end
+      end
+    end
   end
 end
 CreateUserSchema.new.change
@@ -39,5 +44,14 @@ Sidekiq.redis { |conn| conn.flushdb }
 
 ##
 # Create a bunch of users and sidekiq jobs
-10.times  { User.create!(name: "Marcelo") }
+User.on_master do
+  10.times  { User.create!(name: "Marcelo") }
+end
+
+3.times do |n|
+  User.on_db("slave#{n+1}") do
+    10.times  { User.create!(name: "Marcelo") }
+  end
+end
+
 250.times { HardWorker.perform_async('good') }

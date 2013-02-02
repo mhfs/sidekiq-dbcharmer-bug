@@ -3,3 +3,19 @@ development:
   database: development.sqlite3
   pool: 5
   timeout: 5000
+
+  slave1:
+    adapter: sqlite3
+    database: development_slave1.sqlite3
+    pool: 5
+    timeout: 5000
+  slave2:
+    adapter: sqlite3
+    database: development_slave2.sqlite3
+    pool: 5
+    timeout: 5000
+  slave3:
+    adapter: sqlite3
+    database: development_slave3.sqlite3
+    pool: 5
+    timeout: 5000
