@@ -11,15 +11,9 @@ ActiveRecord::Base.establish_connection('development')
 ##
 # Create empty user table and model
 class CreateUserSchema < ActiveRecord::Migration
-  db_magic connections: [:default, :slave1, :slave2, :slave3]
-
   def change
-    [:default, :slave1, :slave2, :slave3].each do |db|
-      on_db db do
-        create_table :users, force: true do |t|
-          t.string :name
-        end
-      end
+    create_table :users, force: true do |t|
+      t.string :name
     end
   end
 end
@@ -44,14 +38,6 @@ Sidekiq.redis { |conn| conn.flushdb }
 
 ##
 # Create a bunch of users and sidekiq jobs
-User.on_master do
-  10.times  { User.create!(name: "Marcelo") }
-end
-
-3.times do |n|
-  User.on_db("slave#{n+1}") do
-    10.times  { User.create!(name: "Marcelo") }
-  end
-end
+10.times  { User.create!(name: "Marcelo") }
 
 250.times { HardWorker.perform_async('good') }
