@@ -2,7 +2,7 @@
 
 Reproduces the bug dicussed at https://github.com/kovyrin/db-charmer/issues/30
 
-## Running
+## Setting up
 
 Clone the repo:
 
@@ -16,8 +16,19 @@ Bundle the gems:
 bundle
 ```
 
+## Failing scenario
+
 ```
 sidekiq -r ./sidekiq-dbcharmer-bug.rb
 ```
 
 You should see the errors in the terminal.
+
+
+## Without concurency
+
+If you eliminate concurrency by using just 1 sidekiq worker everything is fine
+
+```
+sidekiq -r ./sidekiq-dbcharmer-bug.rb -c 1
+```
